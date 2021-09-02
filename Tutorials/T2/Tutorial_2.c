@@ -158,12 +158,12 @@ QUESTION PARTS:
 
             Binary Notation: 00000.000110001
             After the MIPS Code: 10001100000000000...00000
-            In Hexadecimal:
+            In Hexadecimal: 8C000000
 
         2. Hexadecimal value 0x0AAAAAAA
             Binary Notation: 0b1010101010101010101010101010
             After the MIPS Code: 010101.....01010101
-            In hexadecimal:
+            In hexadecimal: 55555555
 
     b) It reverses the bits by copying the LSB to the MSB
 
