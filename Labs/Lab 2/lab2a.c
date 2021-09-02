@@ -10,6 +10,7 @@ int main() {
 	return 0;
 }
 
+
 void display(int age) {
 	printf("%d\n", age);
 }
