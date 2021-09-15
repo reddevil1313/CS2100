@@ -1,0 +1,14 @@
+Address of arrayA: 0x10010000
+Address of count: 0x10010010
+Assembler Directive: .word 1, 0, 2, 0, 3, 4, 8, 16
+
+Map arrayA:
+la $t0, arrayA
+Map count:
+la $t8, count
+lw $t8, 0($t8)
+
+Multiples:
+0x1F
+0x7
+addi $t5, $t8, -1

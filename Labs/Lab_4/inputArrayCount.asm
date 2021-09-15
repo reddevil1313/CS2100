@@ -1,6 +1,6 @@
 # arrayCount.asm
   .data 
-arrayA: .word 11, 0, 32, 22, 9, 17, 6, 6  # arrayA has 8 values
+arrayA: .space 32    #8 element integer array
 count:  .word 999             # dummy value
 str1: .asciiz "User Input X = "
 
@@ -13,11 +13,18 @@ main:
     add $zero, $zero, $zero  #dummy instructions, can be removed
     add $zero, $zero, $zero  #dummy instructions, can be removed
 
-    # code for reading in the user value X
-    li   $v0, 4    # system call code for print_string
-    la   $a0, str1  # address of string to print
-    syscall        # print the string
+    # code for reading in the input values of the array
+    addi $t8, $zero, 0    # Initialise the counter
+readLoop:
+    beq $t8, 32, read     #branch if equal to 32, 8 items
+    li $v0, 5             #read int
+    syscall 
+    sw $v0, arrayA($t8)   #store input in array ERROR HERE
+    addi  $t8, $t8, 4     #add by 4 to count
+    b readLoop
 
+    # code for reading in the user value X
+read:  
     li   $v0, 5           # system call code for read_int
     syscall               # store the integer
 
