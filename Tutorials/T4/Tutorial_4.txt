@@ -1,0 +1,140 @@
+Question 1
+Given: Contents of register and contents of memory.
+Memory Address is in bytes. A word is 4 bytes in MIPS.
+Registers don't have an address. Only values.
+
+            Operand         Target Memory Address       Content
+a.          $t1             Not applicable 
+            $t2             Not applicable              20000
+b.          $s2             NA                          2000  
+            100($zero)      100                         1000
+c.          $t4             NA                          
+            40($s2)         40 + 200 = 240              2400
+d.          $s3             NA                          2400
+            200($zero)      200                         2000
+e.          $t3             NA                          25000
+            $zero($t1)      Illegal(Can't have          ??
+                            register in place of 
+                            immediate operand)
+f.          $s1             NA                          1600
+            140($s1)        140 + 160 = 300             3000
+
+
+Question 2
+Stack 
+    -> Normal Stack that we learn. LIFO inspection. (Last in First out)
+    -> Only one operand, the otehr operand is in the memory.
+    -> Push -> Source operand is pushed into the Stack
+    -> Pop -> Removing the top most content from the stack.
+    -> Add -> Adds the first two operands and result is stored in the top of the stack after removing the two values.
+    -> Assembly Code:
+        -> push @a1
+        -> push @a2
+        -> add
+        -> pop @a0
+
+        -> push @a0
+        -> push @a2
+        -> add
+        -> pop @a1
+
+        -> push @a0
+        -> push @a1
+        -> add
+        -> pop @a2
+
+Accumulator
+    -> Like a buffer which doesn't remove values.
+    -> Load -> Src operand loaded to the Accumulator
+    -> Add -> Src operand added to the Accumulator
+    -> Store -> Store the value to the dest operand
+    -> Assembly Code:
+        -> load @a1
+        -> add @a2
+        -> store @a0
+
+        -> add @a2
+        -> store @a1
+
+        -> add @a0
+        -> store @a2
+
+Memory-Memory
+    -> All operands are from the memory, don't need to load or store to the registers.
+    -> Assembly Code:
+        -> add @a0, @a1, @a2
+        -> add @a1, @a0, @a2
+        -> add @a2, @a0, @a1
+
+Register-Register
+    -> Similar to the MIPS architecture.
+    -> For any operation, bring it to the register.
+    -> Assembly Code:
+        -> load $r1, @a1
+        -> load $r2, @a2
+
+        -> add $r0, $r1, $r2
+        -> store $r0, @a0
+
+        -> add $r1, $r0, $r2
+        -> store $r1, @a1
+
+        -> add $r2, $r1, $r0
+        -> store $r2, @a2
+
+Question 3
+- Opcode
+    - 3 bits for opcode -> 2^3
+- 128 bytes of addressable memory
+    - 7 bits for each address -> 2^7 = 128
+- 5 general-purpose registers for Register-Register ISA
+    - 3 bits to use these registers -> 2^3 = 8 > 5
+- Fixed-length instruction format [we take the longest bit instruction]
+- Memory is byte-addressable [meaning you can access each address for each byte and not just a word]
+- 16-bit Processor. The word size is 16 bits.
+
+a.
+Type                Number of bits      Number of bytes
+Stack               10                  2
+    -> longest -> pop or push operation -> opcode is 3 bits and address is 7 bits -> 3 + 7 = 10
+    -> We need 2 bytes to represent 10 bits, one byte can only take 8 bits
+Accumulator         10                  2
+    -> longest -> any of them -> opcode is 3 bits and address is 7 bits -> 3 + 7 = 10
+    -> We need 2 bytes to represent 10 bits, one byte can only take 8 bits
+Memory-Memory       24                  4
+    -> longest -> opcode is 3 bits, 3 address -> 3*7 -> 21, 21 + 3 = 24 bits.
+    -> We need 3 bytes to represent 24 bits. However, in a 16-bit processor, we need one word + half a word to store 3 bytes.
+       We do not allow that and thus will need 2 words aka 4 bytes. Each word is 16-bits.
+Register-Register   13                  2
+    -> longest -> load or store -> opcode -> 3, register -> 3, address -> 7, total -> 13
+    -> We need 2 bytes.
+
+b.
+Stack -> 2*12 -> 21
+Accumulator -> 2*7 -> 14
+M-M -> 3*4 -> 12
+R-R -> 2*8 -> 16
+
+M-M is the most efficient architecture.
+
+Quesiton 4
+ISA -> 16-bit instructions, 5-bit addresses. 2 classes: class A -> one address, class B -> two addresses.
+opcode is competely utilized.
+Class A -> pppppppppp xxxxx
+Class B -> qqqqqq xxxxx yyyyy
+
+a. 95
+More bits for opcode -> More bits for instructions.
+Max Class B, Min Class A.
+Maximise Class B -> opcode bits -> 000000 -> 111111, reserve one of these opcodes for Class A, e.g. the 000000 one.
+    Instructions -> 2^6 - 1 -> 63
+Minimise Class A -> First 6 are used already, then for the rest 5 -> 2^5 -> 32
+Total -> 63 + 32 -> 95
+
+b. 2017
+More bits for opcode -> More bits for instructions.
+Minimise Class B -> 1 inspection, 000000
+Maximise Class A -> (2^6 - 1)*2^5 + -> 63*32 -> 2016
+Total -> 2017
+
+
