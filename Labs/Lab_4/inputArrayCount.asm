@@ -1,7 +1,7 @@
 # arrayCount.asm
   .data 
-arrayA: .space 32    #8 element integer array
-count:  .word 999             # dummy value
+arrayA: .space 32        # 8 element integer array
+count:  .word 999        # dummy value
 str1: .asciiz "User Input X = "
 
   .text
@@ -9,9 +9,6 @@ main:
     # code to setup the variable mappings
     la $t0, arrayA
     la $t8, count
-    add $zero, $zero, $zero  #dummy instructions, can be removed
-    add $zero, $zero, $zero  #dummy instructions, can be removed
-    add $zero, $zero, $zero  #dummy instructions, can be removed
 
     # code for reading in the input values of the array
     addi $t8, $zero, 0    # Initialise the counter
@@ -50,9 +47,9 @@ skip:
 end:
 
     # code for printing result
-    li   $v0, 1    # system call code for print_int
-    move $a0, $t8  # integer to print
-    syscall        # print the integer
+    li   $v0, 1           # system call code for print_int
+    move $a0, $t8         # integer to print
+    syscall               # print the integer
 
     # code for terminating program
     li  $v0, 10

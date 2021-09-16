@@ -1,7 +1,7 @@
 # arrayCount.asm
   .data 
-arrayA: .word 11, 0, 32, 22, 9, 17, 6, 6  # arrayA has 8 values
-count:  .word 999             # dummy value
+arrayA: .word 1, 2, 3, 4, 5, 6, 7, 8  # arrayA has 8 values
+count:  .word 999         # dummy value
 str1: .asciiz "User Input X = "
 
   .text
@@ -9,14 +9,11 @@ main:
     # code to setup the variable mappings
     la $t0, arrayA
     la $t8, count
-    add $zero, $zero, $zero  #dummy instructions, can be removed
-    add $zero, $zero, $zero  #dummy instructions, can be removed
-    add $zero, $zero, $zero  #dummy instructions, can be removed
 
     # code for reading in the user value X
-    li   $v0, 4    # system call code for print_string
-    la   $a0, str1  # address of string to print
-    syscall        # print the string
+    li   $v0, 4           # system call code for print_string
+    la   $a0, str1        # address of string to print
+    syscall               # print the string
 
     li   $v0, 5           # system call code for read_int
     syscall               # store the integer
@@ -43,9 +40,9 @@ skip:
 end:
 
     # code for printing result
-    li   $v0, 1    # system call code for print_int
-    move $a0, $t8  # integer to print
-    syscall        # print the integer
+    li   $v0, 1           # system call code for print_int
+    move $a0, $t8         # integer to print
+    syscall               # print the integer
 
     # code for terminating program
     li  $v0, 10
