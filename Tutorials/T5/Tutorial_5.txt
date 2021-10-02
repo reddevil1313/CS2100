@@ -1,0 +1,99 @@
+Question 1
+i. 0x8df80000: lw $24, 0($15)
+ii. 0x1023000C: beq $1, $3, 12
+iii. 0x0285c822: sub $25, $20, $5
+
+Registers File                              ALU            Data Memory
+RR1 RR2 WR              WD              Opr1    Opr2    Address     Write Data
+$15 $24 $24         MEM([$15 + 0])     [$15]     0     [$15 + 0]    [$24]
+$1  $3  $3 or $0   [$1]-[$3] or MEM    [$1]    [$3]    [$1] - [$3]  [$3]
+$20 $5  $25        [$20] - [$5]        [$20]   [$5]    [$20] - [$5] [$5]
+
+RegDst  RegWr   ALUSrc  MRd MWr MToR    Brch    ALUop   ALUctrl
+0       1       1       1   0   1       0       00      0010
+X       0       X       0   0   X       1       01      0110
+1       0       0       1   0   0       0       10      0110
+
+Question 2
+Inst- Mem  Adder    MUX     ALU    Reg-File    Data- Mem   Control/ ALUControl Left-shift/ Sign- Extend/ AND
+400ps       100ps   30ps    120ps   200ps       350ps           100ps                   20ps
+(Need to find the critical path -> path which takes the longest time)
+What do you think the cycle time should be as well?
+
+a) “SUB” instruction (e.g. sub $25, $20, $5)
+- 400ps to fetch.
+- 200ps to read to the registers. 
+    At the same time, you have control taking 100ps to decide branch.
+    We take register, since it more crucial (longer).
+    Why never take into account 30ps of MUX? 
+        We don't need the WR until the WD comes in. It is not urgent.
+        Thus, we dont care about it. Until WD is ready, WR will defo be ready.
+    Why never take into account 20ps of Sign-Extend?
+        Because it is happening parallely and less than the 200ps.
+- 30ps of going through ALUSrc (MUX)
+- 120ps of ALU
+- Nothing to do to in the Data Memory
+- 30ps of MToR MUX
+- 200ps to write to Registers
+TOTAL = 980ps
+
+b) “LW” instruction (e.g. lw $24, 0($15))
+- 400ps to fetch.
+- 200ps to read to the registers.
+- 120ps of ALU
+    We dont consider the 30ps of ALUSrc, 
+    because it is part of the shotter path (20+30ps).
+- 350ps of Data Memory
+- 30ps of MToR MUX
+- 200ps of write to register
+TOTAL = 1300ps
+
+c) “BEQ” instruction (e.g. beq $1, $3, 12)
+- 400ps to fetch
+2 Paths:
+1. Critical Path
+    - 200ps to read to the registers
+    - 30ps of MUX (ALUSrc)
+    - 120ps of ALU
+    Next step it goes to PCSrc through the AND
+    - 20ps of AND
+    TOTAL = 400ps
+2. Not Critical Path
+    - 20ps of Sign Extend
+    - 20ps of Left shift
+    - 100ps of Adder
+    - 30ps of PCSrc MUX
+    TOTAL = very short LMAO
+
+Answer: Total = 400 + 400 = 800ps
+
+Question 3
+a) add
+
+Right execution result:
+Many possible answers.
+Make RT = RD.
+Example: add $t0, $t1, $t0
+
+Wrong execution result:
+Example: add $t0, $t1, $t2
+$t2 instead of $t0 is picked as write register.
+
+b) lw
+
+Right execution result:
+Make the left-most 5 bits of imm value same as the reg number of RT
+Example: lw $a0, 8192($t0)
+00100, $a0 = $4
+
+Wrong execution result:
+Anything other than the right result.
+
+c) beq
+Right execution result:
+RegDst = X
+So it doesn't matter.
+BEQ doesnt care about WR.
+
+Wrong execution result:
+None.
