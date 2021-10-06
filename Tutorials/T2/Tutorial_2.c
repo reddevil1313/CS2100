@@ -134,7 +134,7 @@ What is the algorithm doing? -> It is flipping all the LSBs to the MSBs
 
 MIPS CODE:
         (add $t0, $s0, $zero) -> Copy the initial value
-        ($t1, 0x8000) -> sets the MSB of $1 of the 32-bit. (0b1000...000)
+        ($t1, 0x8000) -> sets the MSB of $t1 of the 32-bit. (0b1000...000)
     lp:
         (beq $t0, $zero, e) -> if condition is true, branch to the different operation.
         (andi $t2, $t0, 1) -> extracting the LSB of $t0 into $t2
@@ -162,8 +162,8 @@ QUESTION PARTS:
 
         2. Hexadecimal value 0x0AAAAAAA
             Binary Notation: 0b1010101010101010101010101010
-            After the MIPS Code: 010101.....01010101
-            In hexadecimal: 55555555
+            After the MIPS Code: 111111.....111111
+            In hexadecimal: FFFFFFFF
 
     b) It reverses the bits by copying the LSB to the MSB
 

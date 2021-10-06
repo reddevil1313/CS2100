@@ -1,0 +1,26 @@
+Question 1.
+A -> De Morgan's Law
+B -> Absorption 2
+C -> Absorption 1
+D -> Consensus
+
+Quesiton 2.
+a)
+b)
+
+Question 3.
+a)
+b)
+c)
+d)
+e)
+f)
+g)
+h)
+
+Quesiton 4.
+a)
+b)
+c)
+d)
+

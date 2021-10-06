@@ -35,7 +35,7 @@ a.
         addi $s3, $zero, 1      # matched = 1
 loop:   slt $t0, $s0, $s1       # (lo < hi) ?
         beq $t0, $zero, exit    # exit if (lo >= hi) 
-    (Use slt, beq to implement bit. (bit is a pseudo-instruction; do not sue pseudo-instructions))
+    (Use slt, beq to implement blt. (blt is a pseudo-instruction; do not sue pseudo-instructions))
 
         beq $s3, $zero, exit    # exit if (match === 0)
         
@@ -84,13 +84,13 @@ addi $s1, $zero, 0
     Second register -> 0 -> $zero
     Immediate -> 2. It represents the jumps in addressing. so we jump 2 instructions as the PC will be pointing at
         the next instruction when evaluating -> Thus, this acts as exit.
-    MIPS code: beq $to $zero exit
+    MIPS code: beq $t0 $zero exit
 
 0x22310001
     First convert to binary -> 0010 0010 0011 0001 0000 0000 0000 0001
     opcode -> 8 -> Refers to addi inspection
     Format -> I format. Next 2 5-bits are registers. Last 16 bits is immediate.
-    First register -> 17 -> $1 (rs)
+    First register -> 17 -> $s1 (rs)
     Second register -> 17 -> $s1 (rt)
     Immediate -> 1
 
@@ -144,7 +144,7 @@ bigger:
 
 equal:
     add $s5, $s4, $zero 
-    [j lpEnd]
+    [j end]
 
 loopEnd:
     [j loop]
